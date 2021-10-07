@@ -11,7 +11,7 @@
         <h3>경고</h3>
       </template>
       <template v-slot:footer>
-      <span slot="footer" @click="showModal = false">할 일을 입력하세요.
+      <span @click="showModal = false">할 일을 입력하세요.
             <i class="closeModalBtn fa fa-times" aria-hidden="true"></i>
         </span>
       </template>
