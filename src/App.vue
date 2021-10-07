@@ -1,30 +1,67 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view/>
+    <todo-header></todo-header>
+    <todo-input v-on:addTodo="addTodo"></todo-input>
+    <todo-list v-bind:propsdata="todoItems" v-on:removeTodo="removeTodo"></todo-list>
+    <todo-footer v-on:removeAll="clearAll"></todo-footer>
 </template>
 
+<script>
+import TodoHeader from './components/TodoHeader.vue';
+import TodoInput from './components/TodoInput.vue';
+import TodoList from './components/TodoList.vue';
+import TodoFooter from './components/TodoFooter.vue';
+
+export default {
+  components: {
+    TodoHeader,
+    TodoInput,
+    TodoList,
+    TodoFooter,
+  },
+  data() {
+    return {
+      todoItems: [],
+    };
+  },
+  methods: {
+    addTodo(todoItem) {
+      localStorage.setItem(todoItem, todoItem);
+      this.todoItems.push(todoItem);
+    },
+    removeTodo(todoItem, index) {
+      localStorage.removeItem(todoItem);
+      this.todoItems.splice(index, 1);
+    },
+    clearAll() {
+      localStorage.clear();
+      this.todoItems = [];
+    },
+  },
+  created() {
+    if (localStorage.length > 0) {
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < localStorage.length; i++) {
+        this.todoItems.push(localStorage.key(i));
+      }
+    }
+  },
+};
+
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+body {
   text-align: center;
-  color: #2c3e50;
+  background-color: #f6f6f8;
 }
-
-#nav {
-  padding: 30px;
+input {
+  border-style: groove;
+  width: 200px;
 }
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+button {
+  border-style: groove;
 }
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+.shadow {
+  box-shadow: 5px 10px 10px rgba(0,0,0,0.03);
 }
 </style>
